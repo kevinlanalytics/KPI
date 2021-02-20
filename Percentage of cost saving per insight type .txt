@@ -1,0 +1,41 @@
+--Percentage of cost saving per insight type 
+
+----(1)Create table “cost_saving_summary”
+
+create table cost_saving_summary(total_impact varchar(40), total_impact_percent varchar(40), type_insight varchar(40))
+
+----(2)Insert values into the table
+
+insert into cost_saving_summary(total_impact, total_impact_percent, type_insight)
+values
+((select sum(impact) from spinnaker.med_shorts_alert_completed), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.med_shorts_alert_completed)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'med_shorts_alert_completed'),
+
+((select sum(impact) from spinnaker.med_shorts_alert), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.med_shorts_alert)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'med_shorts_alert'),
+
+((select sum(impact) from spinnaker.overspend_alert_completed), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.overspend_alert_completed)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'overspend_alert_completed'),
+
+((select sum(impact) from spinnaker.overspend_alert), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.overspend_alert)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'overspend_alert'),
+
+((select sum(impact) from spinnaker.recommend_change_alert_completed), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.recommend_change_alert_completed)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'recommend_change_alert_completed'),
+
+((select sum(impact) from spinnaker.recommend_change_alert), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.recommend_change_alert)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'recommend_change_alert'),
+
+((select sum(impact) from spinnaker.price_increase_alert_completed), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.price_increase_alert_completed)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'price_increase_alert_completed'),
+
+((select sum(impact) from spinnaker.price_increase_alert), (select (sum(CSC.impact) /sum(invoice.invoice_sum)) *100--formula 
+from (select sum(impact) as impact from spinnaker.price_increase_alert)CSC, (Select sum(invoice_total) as invoice_sum from spinnaker.invoice)invoice), 
+'price_increase_alert');

@@ -1,0 +1,27 @@
+--Percentage of total spend base off from the total invoice 
+
+select (sum(ti.alert_complete) /sum(invoice.invoice_sum)) *100 as total_cost_saving --formula 
+from(
+select sum(impact) as alert_complete from spinnaker.med_shorts_alert_completed 
+union all
+select sum(impact) as alert_complete  from spinnaker.overspend_alert_completed
+union all
+--select sum(impact) as alert_complete  from spinnaker.overcharged_alert_completed -- it does not have impact column – does not have impact 
+--union all
+select sum(impact) as alert_complete  from spinnaker.recommend_change_alert_completed
+union all
+select sum(impact) as alert_complete  from spinnaker.price_increase_alert_completed
+union all 
+select sum(impact) as alert_complete from spinnaker.med_shorts_alert 
+union all 
+select sum(impact) as alert_complete from spinnaker.overspend_alert
+union all 
+--select sum(impact) as alert_complete from spinnaker.overcharged_alert -- it does not have impact column 
+--union all 
+select sum(impact) as alert_complete from spinnaker.recommend_change_alert
+union all 
+select sum(impact) as alert_complete from spinnaker.price_increase_alert
+) ti,
+(
+Select sum(invoice_total) as invoice_sum from spinnaker.invoice
+)invoice;

@@ -1,0 +1,56 @@
+--Total Percentage of alert completed 
+----This is a total percentage of all the alerts completed out of all incomplete and completed alerts 
+
+select (sum(item1.complete) / sum(item2.noncomplete))*100 as percent_alert_completed --the formula 
+from (
+select count(customer_id) as complete from spinnaker.med_shorts_alert_completed 
+union all
+select count(customer_id) as complete  from spinnaker.med_shorts_alert_closed
+union all
+select count(customer_id) as complete  from spinnaker.overspend_alert_completed
+union all
+select count(customer_id) as complete  from spinnaker.overspend_alert_closed
+union all
+select count(customer_id) as complete  from spinnaker.overcharged_alert_completed
+union all
+select count(customer_id) as complete  from spinnaker.overcharged_alert_closed 
+union all
+select count(customer_id) as complete  from spinnaker.recommend_change_alert_completed
+union all
+select count(customer_id) as complete  from spinnaker.recommend_change_alert_closed
+union all
+select count(customer_id) as complete  from spinnaker.price_increase_alert_completed
+) item1,
+(select count(customer_id) as noncomplete  from spinnaker.price_increase_alert_closed
+union all
+select count(customer_id) as noncomplete from spinnaker.med_shorts_alert_completed 
+union all
+select count(customer_id) as noncomplete  from spinnaker.med_shorts_alert_closed
+union all
+select count(customer_id) as noncomplete  from spinnaker.overspend_alert_completed
+union all
+select count(customer_id) as noncomplete  from spinnaker.overspend_alert_closed
+union all
+select count(customer_id) as noncomplete  from spinnaker.overcharged_alert_completed
+union all
+select count(customer_id) as noncomplete  from spinnaker.overcharged_alert_closed 
+union all
+select count(customer_id) as noncomplete  from spinnaker.recommend_change_alert_completed
+union all
+select count(customer_id) as noncomplete  from spinnaker.recommend_change_alert_closed
+union all
+select count(customer_id) as noncomplete  from spinnaker.price_increase_alert_completed
+union all
+select count(customer_id) as noncomplete  from spinnaker.price_increase_alert_closed
+union all 
+select count(customer_id) as noncomplete from spinnaker.med_shorts_alert 
+union all 
+select count(customer_id) as noncomplete from spinnaker.overspend_alert
+union all 
+select count(customer_id) as noncomplete from spinnaker.overcharged_alert
+union all 
+select count(customer_id) as noncomplete from spinnaker.recommend_change_alert
+union all 
+select count(customer_id) as noncomplete from spinnaker.price_increase_alert
+) item2; 
+

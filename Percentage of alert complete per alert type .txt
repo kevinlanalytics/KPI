@@ -1,0 +1,63 @@
+
+--Percentage of alert complete per alert type 
+----Creating a table “percent_alert_completion”
+
+
+create table percent_alert_completion(percent_completion varchar(40), type_alert varchar(40))
+
+--Insert the data (click text box and control A to select all the codes)
+
+insert into percent_alert_completion(percent_completion, type_alert)
+values 
+((select (sum(item1.complete) / sum(item2.noncomplete))*100 as percent_alert_completed
+from 
+(select count(customer_id) as complete from spinnaker.med_shorts_alert_completed 
+union all
+select count(customer_id) as complete  from spinnaker.med_shorts_alert_closed
+) item1,
+(select count(customer_id) as noncomplete from spinnaker.med_shorts_alert_completed 
+union all
+select count(customer_id) as noncomplete  from spinnaker.med_shorts_alert_closed
+union all
+select count(customer_id) as noncomplete from spinnaker.med_shorts_alert 
+) item2), 'med_shorts_alert'), 
+
+((select (sum(item1.complete) / sum(item2.noncomplete))*100 as percent_alert_completed
+from 
+(select count(customer_id) as complete from spinnaker.overspend_alert_completed 
+union all
+select count(customer_id) as complete  from spinnaker.overspend_alert_closed
+) item1,
+(select count(customer_id) as noncomplete from spinnaker.overspend_alert_completed 
+union all
+select count(customer_id) as noncomplete  from spinnaker.overspend_alert_closed
+union all
+select count(customer_id) as noncomplete from spinnaker.overspend_alert
+) item2), 'overspend_alert'), 
+
+((select (sum(item1.complete) / sum(item2.noncomplete))*100 as percent_alert_completed
+from 
+(select count(customer_id) as complete from spinnaker.recommend_change_alert_completed 
+union all
+select count(customer_id) as complete  from spinnaker.recommend_change_alert_closed
+) item1,
+(select count(customer_id) as noncomplete from spinnaker.recommend_change_alert_completed
+union all
+select count(customer_id) as noncomplete  from spinnaker.recommend_change_alert_closed
+union all
+select count(customer_id) as noncomplete from spinnaker.recommend_change_alert
+) item2), 'recommend_change_alert'), 
+
+((select (sum(item1.complete) / sum(item2.noncomplete))*100 as percent_alert_completed
+from 
+(select count(customer_id) as complete from spinnaker.price_increase_alert_completed 
+union all
+select count(customer_id) as complete  from spinnaker.price_increase_alert_closed
+) item1,
+(select count(customer_id) as noncomplete from spinnaker.price_increase_alert_completed
+union all
+select count(customer_id) as noncomplete  from spinnaker.price_increase_alert_closed
+union all
+select count(customer_id) as noncomplete from spinnaker.price_increase_alert
+) item2), 'price_increase_alert');
+
